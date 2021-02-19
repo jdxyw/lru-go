@@ -34,7 +34,7 @@ func TestLRUCache_Add(t *testing.T) {
 }
 
 func TestLRUCache_Add2(t *testing.T) {
-	l := NewCache(0)
+	l := NewCache(-1)
 	l.Add("Python", 1)
 	l.Add("Perl", 2)
 	l.Add("Go", 3)
@@ -119,6 +119,42 @@ func TestLRUCache_Purge(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := l.Len(); got != 0 {
 				t.Errorf("Len = %v, want 0", got)
+			}
+		})
+	}
+}
+
+func TestLRUCache_PurgeAdd(t *testing.T) {
+	l := NewCache(5)
+	l.Add("Python", 1)
+	l.Add("Perl", 2)
+	l.Add("Go", 3)
+	l.Add("C++", 4)
+	l.Add("Java", 5)
+	l.Add("C", 6)
+
+	l.Purge()
+
+	l.Add("C++", 4)
+	l.Add("Java", 5)
+	l.Add("C", 6)
+
+	type args struct {
+		key   interface{}
+		value interface{}
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		{name: "testcase1", args: args{key: "C++", value: 4}},
+		{name: "testcase2", args: args{key: "Java", value: 5}},
+		{name: "testcase3", args: args{key: "C", value: 6}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got, _ := l.Get(tt.args.key); got.(int) != tt.args.value.(int) {
+				t.Errorf("Get = %v, want nil", got)
 			}
 		})
 	}
