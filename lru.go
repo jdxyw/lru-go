@@ -5,6 +5,7 @@ import (
 	"container/list"
 )
 
+// LRUCache is a lru cache.
 type LRUCache struct {
 	// maxCap sets the max elements the cache supports. 0 or negative number means no limit
 	maxCap          int
