@@ -15,7 +15,7 @@ go get github.com/jdxyw/lru-go
 
 # Simple Usage
 
-```
+```go
 package main
 
 import (
